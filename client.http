@@ -1,0 +1,76 @@
+@baseUrl = http://localhost:3333
+@authToken = {{authenticate.response.body.access_token}}
+
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "name": "Diego Galvão",
+  "email": "diego2@galvao.com.br",
+  "password": "123456"
+}
+
+###
+
+# @name get_accounts
+GET {{baseUrl}}/accounts
+
+###
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "diego@galvao.com.br",
+  "password": "123456"
+}
+
+###
+
+# @name create_question
+POST {{baseUrl}}/questions
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "New question 5",
+  "content": "content question"
+}
+
+###
+
+# @name fetch_recent_questions
+GET {{baseUrl}}/questions?page=1
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name create_answer
+POST {{baseUrl}}/questions/{{fetch_recent_questions.response.body.questions[0].id}}/answers
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "content": "New answer content 2"
+}
+
+###
+
+# @name edit_answer
+PUT {{baseUrl}}/answers/1e2329ba-50aa-4189-ac67-61fd56910047
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "content": "Edited answer content 2"
+}
+
+###
+
+# @name delete_answer
+DELETE {{baseUrl}}/answers/1e2329ba-50aa-4189-ac67-61fd56910047
+Authorization: Bearer {{authToken}}
+
+###
