@@ -1,5 +1,5 @@
-import type { NotificationRepository } from '@/domain/notification/application/repositories/notifications-repository'
-import type { Notification } from '@/domain/notification/enterprise/entities/notification'
+import { NotificationRepository } from '@/domain/notification/application/repositories/notifications-repository'
+import { Notification } from '@/domain/notification/enterprise/entities/notification'
 
 export class InMemoryNotificationsRepository implements NotificationRepository {
   public items: Notification[] = []

@@ -5,7 +5,7 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found'
 import { Injectable } from '@nestjs/common'
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
 import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachment-list'
-import type { Answer } from '../../enterprise/entities/answers'
+import { Answer } from '../../enterprise/entities/answers'
 import { AnswerAttachmentRepository } from '../repositories/answer-attachments-repository'
 import { AnswersRepository } from '../repositories/answers-repository'
 

@@ -1,12 +1,18 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { AnswerComment } from '../../enterprise/entities/answer-comments'
+import { PaginationParams } from '@/core/repositories/pagination-params'
+import { AnswerComment } from '../../enterprise/entities/answer-comments'
+import { CommentWithAuthor } from '../../enterprise/entities/value-objects/comment-with-author'
 
 export abstract class AnswerCommentRepository {
   abstract findById(id: string): Promise<AnswerComment | null>
   abstract findManyByAnswerId(
-    questionId: string,
+    answerId: string,
     params: PaginationParams,
   ): Promise<AnswerComment[]>
+
+  abstract findManyByAnswerIdWithAuthor(
+    answerId: string,
+    params: PaginationParams,
+  ): Promise<CommentWithAuthor[]>
 
   abstract create(answerComment: AnswerComment): Promise<void>
   abstract delete(answerComment: AnswerComment): Promise<void>

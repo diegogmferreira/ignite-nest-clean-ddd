@@ -18,7 +18,7 @@ type ChooseQuestionBestAnswerUseCaseResponse = Either<
   }
 >
 
-Injectable()
+@Injectable()
 export class ChooseQuestionBestAnswerUseCase {
   constructor(
     private answerRepository: AnswersRepository,
@@ -49,7 +49,7 @@ export class ChooseQuestionBestAnswerUseCase {
 
     question.bestAnswerId = answer.id
 
-    await this.answerRepository.save(answer)
+    await this.questionRepository.save(question)
 
     return right({ question })
   }

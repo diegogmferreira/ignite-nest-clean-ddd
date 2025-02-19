@@ -1,6 +1,6 @@
 import { Entity } from '@/core/entities/entity'
-import type { UniqueEntityID } from '@/core/entities/unique-entity'
-import type { Optional } from '@/core/types/optional'
+import { UniqueEntityID } from '@/core/entities/unique-entity'
+import { Optional } from '@/core/types/optional'
 
 export interface Props {
   recipientId: UniqueEntityID

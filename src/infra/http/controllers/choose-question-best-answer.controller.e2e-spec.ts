@@ -37,7 +37,7 @@ describe('Choose question best answer (E2E)', () => {
   test('[PATCH] /answers/:answerId/choose-as-best', async () => {
     const user = await studentFactory.makePrismaStudent()
 
-    const accessToken = jwt.sign({ sub: user.id })
+    const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const question = await questionFactory.makePrismaQuestion({
       authorId: user.id,
@@ -51,7 +51,7 @@ describe('Choose question best answer (E2E)', () => {
     const answerId = answer.id.toString()
 
     const response = await request(app.getHttpServer())
-      .post(`/answers/${answerId}/choose-as-best`)
+      .patch(`/answers/${answerId}/choose-as-best`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
@@ -63,6 +63,6 @@ describe('Choose question best answer (E2E)', () => {
       },
     })
 
-    expect(questionOnDatabase?.bestAnswerId).toEqual(answer.id)
+    expect(questionOnDatabase?.bestAnswerId).toEqual(answerId)
   })
 })

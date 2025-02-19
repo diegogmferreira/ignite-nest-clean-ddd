@@ -1,5 +1,5 @@
-// import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { Student } from '../../enterprise/entities/students';
+// import  { PaginationParams } from '@/core/repositories/pagination-params'
+import { Student } from '../../enterprise/entities/students'
 
 export abstract class StudentRepository {
   abstract findByEmail(email: string): Promise<Student | null>

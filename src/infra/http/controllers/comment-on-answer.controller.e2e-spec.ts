@@ -37,7 +37,7 @@ describe('Comment on answer (E2E)', () => {
   test('[POST] /answer/:answerId/comments', async () => {
     const user = await studentFactory.makePrismaStudent()
 
-    const accessToken = jwt.sign({ sub: user.id })
+    const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const question = await questionFactory.makePrismaQuestion({
       authorId: user.id,
@@ -51,7 +51,7 @@ describe('Comment on answer (E2E)', () => {
     const answerId = answer.id.toString()
 
     const response = await request(app.getHttpServer())
-      .post(`/answer/${answerId}/comments`)
+      .post(`/answers/${answerId}/comments`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'New Answer Comment',

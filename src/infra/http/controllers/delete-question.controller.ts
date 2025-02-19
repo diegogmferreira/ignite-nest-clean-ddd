@@ -19,7 +19,7 @@ export class DeleteQuestionController {
     @CurrentUser() user: UserPayload,
     @Param('id') questionId: string,
   ) {
-    const { sub: userId } = user
+    const userId = user.sub
 
     const result = await this.deleteQuestion.execute({
       questionId,

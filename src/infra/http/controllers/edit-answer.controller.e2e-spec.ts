@@ -26,8 +26,8 @@ describe('Edit answer (E2E)', () => {
       imports: [AppModule, DatabaseModule],
       providers: [
         StudentFactory,
-        AnswerFactory,
         QuestionFactory,
+        AnswerFactory,
         AttachmentFactory,
         AnswerAttachmentFactory,
       ],
@@ -35,12 +35,12 @@ describe('Edit answer (E2E)', () => {
 
     app = moduleRef.createNestApplication()
 
+    prisma = moduleRef.get(PrismaService)
     studentFactory = moduleRef.get(StudentFactory)
     questionFactory = moduleRef.get(QuestionFactory)
     answerFactory = moduleRef.get(AnswerFactory)
     attachmentFactory = moduleRef.get(AttachmentFactory)
     answerAttachmentFactory = moduleRef.get(AnswerAttachmentFactory)
-    prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
@@ -49,7 +49,7 @@ describe('Edit answer (E2E)', () => {
   test('[PUT] /answers/:id', async () => {
     const user = await studentFactory.makePrismaStudent()
 
-    const accessToken = jwt.sign({ sub: user.id })
+    const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const question = await questionFactory.makePrismaQuestion({
       authorId: user.id,
@@ -77,7 +77,7 @@ describe('Edit answer (E2E)', () => {
     const answerId = answer.id.toString()
 
     const response = await request(app.getHttpServer())
-      .post(`/answers/${answerId}`)
+      .put(`/answers/${answerId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'Edited answer content',

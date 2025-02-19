@@ -2,15 +2,20 @@ import { UniqueEntityID } from '@/core/entities/unique-entity'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { makeAnswerComment } from 'test/factories/make-answer-comment'
 import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 import { expect, it } from 'vitest'
 import { DeleteAnswerCommentUseCase } from './delete-answer-comment'
 
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
 let sut: DeleteAnswerCommentUseCase
 
 describe('Delete answer comment', () => {
   beforeEach(() => {
-    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository(
+      inMemoryStudentsRepository,
+    )
     sut = new DeleteAnswerCommentUseCase(inMemoryAnswerCommentsRepository)
   })
 
@@ -20,7 +25,7 @@ describe('Delete answer comment', () => {
     await inMemoryAnswerCommentsRepository.create(answerComment)
 
     await sut.execute({
-      answerId: answerComment.id.toString(),
+      answerCommentId: answerComment.id.toString(),
       authorId: answerComment.authorId.toString(),
     })
 
@@ -35,7 +40,7 @@ describe('Delete answer comment', () => {
     await inMemoryAnswerCommentsRepository.create(answerComment)
 
     const result = await sut.execute({
-      answerId: answerComment.id.toString(),
+      answerCommentId: answerComment.id.toString(),
       authorId: 'author-2',
     })
 

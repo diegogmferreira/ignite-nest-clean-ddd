@@ -17,7 +17,7 @@ const commentOnAnswerBodySchema = z.object({
 
 type CommentOnAnswerBodySchema = z.infer<typeof commentOnAnswerBodySchema>
 
-@Controller('/questions/:questionId/comments')
+@Controller('/answers/:answerId/comments')
 export class CommentOnAnswerController {
   constructor(private commentOnAnswer: CommentOnAnswerUseCase) {}
 

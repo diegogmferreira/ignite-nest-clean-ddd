@@ -1,4 +1,4 @@
-import type {
+import {
   Uploader,
   UploadParams,
 } from '@/domain/forum/application/storage/uploader'

@@ -2,7 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found'
 import { Notification } from '../../enterprise/entities/notification'
-import type { NotificationRepository } from '../repositories/notifications-repository'
+import { NotificationRepository } from '../repositories/notifications-repository'
 
 interface ReadNotificationUseCaseRequest {
   recipientId: string

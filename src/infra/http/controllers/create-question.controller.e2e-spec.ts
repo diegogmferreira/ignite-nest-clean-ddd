@@ -34,7 +34,7 @@ describe('Create question (E2E)', () => {
   test('[POST] /questions', async () => {
     const user = await studentFactory.makePrismaStudent()
 
-    const accessToken = jwt.sign({ sub: user.id })
+    const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const attachment1 = await attachmentFactory.makePrismaAttachment()
     const attachment2 = await attachmentFactory.makePrismaAttachment()

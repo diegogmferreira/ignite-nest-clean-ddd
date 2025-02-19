@@ -1,4 +1,4 @@
-import type { Comment } from '@/domain/forum/enterprise/entities/comment'
+import { Comment } from '@/domain/forum/enterprise/entities/comment'
 
 export class CommentPresenter {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

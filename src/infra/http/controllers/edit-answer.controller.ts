@@ -17,6 +17,8 @@ const editAnswerBodySchema = z.object({
   attachments: z.array(z.string().uuid()).default([]),
 })
 
+const bodyValidationPipe = new ZodValidationPipe(editAnswerBodySchema)
+
 type EditAnswerBodySchema = z.infer<typeof editAnswerBodySchema>
 
 @Controller('/answers/:id')
@@ -26,15 +28,13 @@ export class EditAnswerController {
   @Put()
   @HttpCode(204)
   async handle(
-    @Body(new ZodValidationPipe(editAnswerBodySchema))
+    @Body(bodyValidationPipe)
     body: EditAnswerBodySchema,
     @CurrentUser() user: UserPayload,
     @Param('id') answerId: string,
   ) {
     const { content, attachments } = body
-    const { sub: userId } = user
-
-    console.log(content)
+    const userId = user.sub
 
     const result = await this.editAnswer.execute({
       answerId,

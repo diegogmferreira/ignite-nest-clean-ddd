@@ -11,6 +11,8 @@ let sut: UploadAndCreateAttachmentUseCase
 describe('Upload and create attachment', () => {
   beforeEach(() => {
     inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    fakeUploader = new FakeUploader()
+
     sut = new UploadAndCreateAttachmentUseCase(
       inMemoryAttachmentsRepository,
       fakeUploader,
@@ -19,7 +21,7 @@ describe('Upload and create attachment', () => {
 
   it('should be able to upload and create attachment', async () => {
     const result = await sut.execute({
-      fileName: 'logo.png',
+      fileName: 'profile.png',
       fileType: 'image/png',
       body: Buffer.from(''),
     })
@@ -29,7 +31,11 @@ describe('Upload and create attachment', () => {
       attachment: inMemoryAttachmentsRepository.items[0],
     })
     expect(fakeUploader.uploads).toHaveLength(1)
-    expect(fakeUploader.uploads[0].fileName).toEqual('logo.png')
+    expect(fakeUploader.uploads[0]).toEqual(
+      expect.objectContaining({
+        fileName: 'profile.png',
+      }),
+    )
   })
 
   it('should not be able to upload and create attachment with invalid file type', async () => {
