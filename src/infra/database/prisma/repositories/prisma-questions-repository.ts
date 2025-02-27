@@ -4,6 +4,7 @@ import { QuestionAttachmentRepository } from '@/domain/forum/application/reposit
 import { QuestionRepository } from '@/domain/forum/application/repositories/questions-repository'
 import { Question } from '@/domain/forum/enterprise/entities/questions'
 import { QuestionDetails } from '@/domain/forum/enterprise/entities/value-objects/question-details'
+import { CacheRepository } from '@/infra/cache/cache-repository'
 import { Injectable } from '@nestjs/common'
 import { PrismaQuestionDetailsMapper } from '../mappers/prisma-question-details-mapper'
 import { PrismaQuestionMapper } from '../mappers/prisma-question-mapper'
@@ -13,6 +14,7 @@ import { PrismaService } from '../prisma.service'
 export class PrismaQuestionsRepository implements QuestionRepository {
   constructor(
     private prisma: PrismaService,
+    private cache: CacheRepository,
     private questionAttachmentsRepository: QuestionAttachmentRepository,
   ) {}
 
@@ -41,6 +43,14 @@ export class PrismaQuestionsRepository implements QuestionRepository {
   }
 
   async findDetailsBySlug(slug: string): Promise<QuestionDetails | null> {
+    const cacheHit = await this.cache.get(`question:${slug}:details`)
+
+    if (cacheHit) {
+      const cachedData = JSON.parse(cacheHit)
+
+      return PrismaQuestionDetailsMapper.toDomain(cachedData)
+    }
+
     const question = await this.prisma.question.findUnique({
       where: { slug },
       include: { author: true, attachments: true },
@@ -50,7 +60,11 @@ export class PrismaQuestionsRepository implements QuestionRepository {
       return null
     }
 
-    return PrismaQuestionDetailsMapper.toDomain(question)
+    await this.cache.set(`question:${slug}:details`, JSON.stringify(question))
+
+    const questionDetails = PrismaQuestionDetailsMapper.toDomain(question)
+
+    return questionDetails
   }
 
   async findManyRecent({ page }: PaginationParams): Promise<Question[]> {
@@ -95,6 +109,8 @@ export class PrismaQuestionsRepository implements QuestionRepository {
       this.questionAttachmentsRepository.deleteMany(
         question.attachments.getRemovedItems(),
       ),
+
+      this.cache.delete(`question:${data.slug}:details`),
     ])
 
     DomainEvents.dispatchEventsForAggregate(question.id)
