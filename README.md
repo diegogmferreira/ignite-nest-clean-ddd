@@ -1,6 +1,6 @@
 # Ignite Nest Clean DDD
 
-A backend API project built with **NestJS**, following the principles of **Domain-Driven Design (DDD)** and the **Clean Architecture** pattern. This project is part of the Ignite Node.js course by Rocketseat, focusing on creating scalable and maintainable applications.
+A backend API project built with **NestJS**, following the principles of **Domain-Driven Design (DDD)** and the **Clean Architecture** pattern.
 
 ## 🛠️ Technologies
 
